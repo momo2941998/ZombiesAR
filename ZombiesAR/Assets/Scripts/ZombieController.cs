@@ -11,11 +11,13 @@ public class ZombieController : MonoBehaviour
     [SerializeField] private float attackCooldownTimer;
 
     [SerializeField] private bool isZombieAttacking;
+    private AudioSource audioSource;
     private Animator anim;
     void Start()
     {
         anim = GetComponent<Animator>();
         attackCooldownTimer = timeBetweenAttacks;
+        LoadSound();
     }
 
     // Update is called once per frame
@@ -60,12 +62,18 @@ public class ZombieController : MonoBehaviour
         isZombieAttacking = true;
         anim.Play("Zombie Attack");
         StartCoroutine(FinishAttacking());
+        audioSource.Play();
     }
 
     private IEnumerator FinishAttacking()
     {
         yield return new WaitForSeconds(1.2f);
         isZombieAttacking = false;
+    }
+
+    private void LoadSound()
+    {
+        audioSource = GetComponent<AudioSource>();
     }
 
 }
