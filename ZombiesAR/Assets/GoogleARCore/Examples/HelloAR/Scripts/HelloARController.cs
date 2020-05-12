@@ -25,6 +25,7 @@ namespace GoogleARCore.Examples.HelloAR
     using GoogleARCore.Examples.Common;
     using UnityEngine;
     using UnityEngine.EventSystems;
+    using UnityEngine.UI;
 
 #if UNITY_EDITOR
     // Set up touch input propagation while using Instant Preview in the editor.
@@ -36,6 +37,22 @@ namespace GoogleARCore.Examples.HelloAR
     /// </summary>
     public class HelloARController : MonoBehaviour
     {
+        public Button PlaceGroundButton;
+        public Button PlaceTombButton;
+        public Button StartGameButton;
+
+        public GameObject DummyPrefab;
+        public GameObject GroundPlanePrefab;
+        public GameObject TombPrefab;
+
+        private GameObject groundPlaneGO;
+        private GameObject dummyGO;
+
+        private bool isDummyInitialized;
+        private bool isGroundPlaced;
+        private bool hasGameStarted;
+        private int numOfTombsPlaced = 0;
+
         /// <summary>
         /// The first-person camera being used to render the passthrough camera image (i.e. AR
         /// background).
