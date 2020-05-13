@@ -15,6 +15,8 @@ public class GunController : MonoBehaviour
     public float powerGun;
     public float refillTime = 0.1f;
     GameManagerController gameManagerController;
+    public Vector3 movePos = new Vector3(0,0,0.2f);
+    public float backTime = 0.05f;
 
     public Button fire;
     // Start is called before the first frame update
@@ -37,7 +39,10 @@ public class GunController : MonoBehaviour
     }
 
     void Shoot(){
+        if (powerGun <= 0) return;
         powerGun -= 1;
+        ShootEffect();
+        fpsCam.GetComponent<ShakeCam>().Shake(0.2f);
         gameManagerController.UpdatePowerGun(powerGun);
         StopAllCoroutines();
         muzzleFlashPartical.Play();
@@ -74,6 +79,20 @@ public class GunController : MonoBehaviour
             powerGun += 1;
         }
         gameManagerController.UpdatePowerGun(powerGun);
+    }
+
+    void ShootEffect()
+    {
+        MoveBackward();
+        Invoke("MoveForward",backTime);
+    }
+    void MoveBackward()
+    {
+        transform.position -= movePos;
+    }
+    void MoveForward()
+    {
+        transform.position += movePos;
     }
 
 }

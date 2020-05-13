@@ -37,19 +37,21 @@ public class GameManagerController : MonoBehaviour
 
     public void ZombieAttack(float damage)
     {
-        bloodScreen.gameObject.SetActive(true);
+        InvokeRepeating("FlickImage", 0,0.2f);
+        
         playerController.DecreaseHp(damage);
         UpdadtePlayerHP();
     }
 
     public void ZombieFinishAttack()
     {
-        bloodScreen.gameObject.SetActive(false);
+        // bloodScreen.gameObject.SetActive(false);
+        CancelInvoke("FlickImage");
     }
 
     public void UpdadtePlayerHP()
     {
-        hpText.text = "HP: " + playerController.playerHp;
+        hpText.text = ""+  playerController.playerHp;
     }
 
     IEnumerator EndGameWait()
@@ -60,6 +62,15 @@ public class GameManagerController : MonoBehaviour
 
     public void UpdatePowerGun(float currentPower)
     {
-        powerGunText.text = "POWER: " + currentPower;
+        powerGunText.text = "" + currentPower;
+    }
+
+    void FlickImage ()
+    {
+        bloodScreen.gameObject.SetActive(true);
+        Invoke("DisActiveBloodScreen", 0.1f);
+    }
+    void DisActiveBloodScreen(){
+        bloodScreen.gameObject.SetActive(false);
     }
 }
