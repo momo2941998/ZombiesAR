@@ -20,8 +20,13 @@ public class SpawnController : MonoBehaviour
     private void spawnZombie()
     {
         Vector3 position = gameObject.transform.position;
-
-        GameObject zombieGO = Instantiate(FemaleZombiePrefab, new Vector3(position.x, position.y, position.z), Quaternion.Euler(0, Random.Range(0f, 360f), 0));
+        GameObject pooledProjectile = ObjectPooler.SharedInstance.GetPooledObject();
+            if (pooledProjectile != null)
+            {
+                pooledProjectile.SetActive(true); // activate it
+                pooledProjectile.transform.position = transform.position + new Vector3(Random.Range(-3,3),0,0); // position it at player
+            }
+        GameObject zombieGO = pooledProjectile;
     }
 
 }
