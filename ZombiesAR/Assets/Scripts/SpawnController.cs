@@ -24,7 +24,8 @@ public class SpawnController : MonoBehaviour
             if (pooledProjectile != null)
             {
                 pooledProjectile.SetActive(true); // activate it
-                pooledProjectile.transform.position = transform.position + new Vector3(Random.Range(-3,3),0,0); // position it at player
+                pooledProjectile.transform.position = transform.position ; // position it at player
+                pooledProjectile.transform.rotation = transform.rotation;
             }
         GameObject zombieGO = pooledProjectile;
     }

@@ -16,6 +16,9 @@ public class ZombieController : MonoBehaviour
     private Animator anim;
     private GameManagerController gameManagerController;
     [SerializeField] private float damage = 50;
+    public float zombieHp;
+    public float zombieHpMax = 50;
+    public float speedMove = 1;
     void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -24,6 +27,7 @@ public class ZombieController : MonoBehaviour
         attackCooldownTimer = timeBetweenAttacks;
         gameManagerController =GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
         playerController = player.GetComponent<PlayerController>();
+        InitZombie();
     }
 
     // Update is called once per frame
@@ -43,7 +47,7 @@ public class ZombieController : MonoBehaviour
     void Move()
     {
         transform.LookAt(player.transform.position);
-        transform.Translate(Vector3.forward * Time.deltaTime);
+        transform.Translate(Vector3.forward * Time.deltaTime* speedMove);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
@@ -85,4 +89,41 @@ public class ZombieController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    public void TakeDamage(float _damage)
+    {
+        zombieHp -= _damage;
+        if (zombieHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die(){
+        gameObject.SetActive(false);
+        StopCoroutine(FinishAttacking());
+        InitZombie();
+    }
+    private void ResetHp()
+    {
+        zombieHp = zombieHpMax;
+    }
+
+    private void StopMoving(){
+        speedMove = 0;
+    }
+
+    private void ReturnMoving(float _speed)
+    {
+        speedMove = _speed;
+    }
+
+    private void InitZombie()
+    {
+        ResetHp();
+        gameManagerController.ZombieFinishAttack();
+        ReturnMoving(1);
+        transform.position = GameObject.Find("Tombstones").transform.position;
+        StopAllCoroutines();
+        isZombieClose = false;
+    }
 }
