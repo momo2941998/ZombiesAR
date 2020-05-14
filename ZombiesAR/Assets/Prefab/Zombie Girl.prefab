@@ -840,6 +840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1a336dd7c30114a9ecb8fe476a188b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zombieScore: 5
   player: {fileID: 0}
   isZombieClose: 0
   timeBetweenAttacks: 3

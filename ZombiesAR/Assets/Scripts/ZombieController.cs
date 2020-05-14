@@ -5,6 +5,7 @@ using UnityEngine;
 public class ZombieController : MonoBehaviour
 {
     // Start is called before the first frame update
+    [SerializeField] private float zombieScore;
     [SerializeField] private GameObject player;
     private PlayerController playerController;
     [SerializeField] private bool isZombieClose = false;
@@ -94,6 +95,7 @@ public class ZombieController : MonoBehaviour
             anim.SetTrigger("isDeath");
             zombieRb.detectCollisions = false;
             StopMoving();
+            gameManagerController.IncreaseScore(zombieScore);
             StopCoroutine(FinishAttacking());
             Invoke("Die", 2);
         }

@@ -15,13 +15,17 @@ public class GameManagerController : MonoBehaviour
     public TextMeshProUGUI hpText;
     public TextMeshProUGUI powerGunText;
     public TextMeshProUGUI timeLeftText;
+    public TextMeshProUGUI scoreText;
     public float playerHpMax = 10000;
     private float timeLeft;
+    public float score;
     [SerializeField]private float playTime = 90;
     bool isGameOver;
     // Start is called before the first frame update
     void Start()
     {
+        score = 0;
+        IncreaseScore(0);
         isGameOver = false;
         timeLeft = playTime;
         player = GameObject.FindWithTag("Player");
@@ -100,4 +104,11 @@ public class GameManagerController : MonoBehaviour
         string str =  t.ToString(@"mm\:ss");
         timeLeftText.text = str;
     }
+    public void IncreaseScore(float value)
+    {
+        score += value;
+        scoreText.text = "SCORE: " + score;
+    }
+
+    
 }
