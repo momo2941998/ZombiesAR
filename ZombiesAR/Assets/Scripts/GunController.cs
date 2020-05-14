@@ -10,19 +10,21 @@ public class GunController : MonoBehaviour
     public Camera fpsCam;
     public ParticleSystem muzzleFlashPartical;
     public GameObject impact;
-    public float hitForce = 10;
+    public float hitForce = 300;
     public float powerGunMax = 50;
     public float powerGun;
     public float refillTime = 0.1f;
     GameManagerController gameManagerController;
     public Vector3 movePos = new Vector3(0,0,0.2f);
     public float backTime = 0.05f;
+    private AudioSource fireSound;
 
     public Button fire;
     // Start is called before the first frame update
     void Start()
     {
         gameManagerController = GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
+        fireSound = GetComponent<AudioSource>();
         powerGun = powerGunMax;
         fpsCam = Camera.main;
         fire.onClick.AddListener(Shoot);
@@ -40,6 +42,7 @@ public class GunController : MonoBehaviour
 
     void Shoot(){
         if (powerGun <= 0) return;
+        fireSound.Play();
         powerGun -= 1;
         ShootEffect();
         fpsCam.GetComponent<ShakeCam>().Shake(0.2f);
@@ -57,7 +60,7 @@ public class GunController : MonoBehaviour
             }
             if (hit.rigidbody != null)
             {
-                hit.rigidbody.AddForce(hit.normal * hitForce);
+                hit.rigidbody.AddForce(hit.normal * hitForce,ForceMode.Impulse);
             }
             GameObject impactGO = Instantiate(impact,hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(impactGO, 2);

@@ -10,6 +10,7 @@ public class ZombieController : MonoBehaviour
     [SerializeField] private bool isZombieClose = false;
     [SerializeField] private float timeBetweenAttacks = 3;
     [SerializeField] private float attackCooldownTimer;
+    private Rigidbody zombieRb;
 
     [SerializeField] private bool isZombieAttacking;
     private AudioSource audioSource;
@@ -21,12 +22,7 @@ public class ZombieController : MonoBehaviour
     public float speedMove = 1;
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
-        anim = GetComponent<Animator>();
-        LoadSound();
-        attackCooldownTimer = timeBetweenAttacks;
-        gameManagerController =GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
-        playerController = player.GetComponent<PlayerController>();
+
         InitZombie();
     }
 
@@ -34,6 +30,7 @@ public class ZombieController : MonoBehaviour
     void Update()
     {
         if (isZombieAttacking) return;
+        anim.SetFloat("speed", speedMove);
         Move();
         attackCooldownTimer -= Time.deltaTime;
         if (attackCooldownTimer <= 0 && isZombieClose)
@@ -47,7 +44,7 @@ public class ZombieController : MonoBehaviour
     void Move()
     {
         transform.LookAt(player.transform.position);
-        transform.Translate(Vector3.forward * Time.deltaTime* speedMove);
+        transform.Translate(Vector3.forward * Time.deltaTime * speedMove);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
@@ -81,8 +78,8 @@ public class ZombieController : MonoBehaviour
         yield return new WaitForSeconds(1.2f);
         isZombieAttacking = false;
         gameManagerController.ZombieFinishAttack();
-	}
-    
+    }
+
 
     private void LoadSound()
     {
@@ -94,13 +91,17 @@ public class ZombieController : MonoBehaviour
         zombieHp -= _damage;
         if (zombieHp <= 0)
         {
-            Die();
+            anim.SetTrigger("isDeath");
+            zombieRb.detectCollisions = false;
+            StopMoving();
+            StopCoroutine(FinishAttacking());
+            Invoke("Die", 2);
         }
     }
 
-    private void Die(){
+    private void Die()
+    {
         gameObject.SetActive(false);
-        StopCoroutine(FinishAttacking());
         InitZombie();
     }
     private void ResetHp()
@@ -108,22 +109,38 @@ public class ZombieController : MonoBehaviour
         zombieHp = zombieHpMax;
     }
 
-    private void StopMoving(){
+    private void StopMoving()
+    {
         speedMove = 0;
     }
 
     private void ReturnMoving(float _speed)
     {
+        speedMove = 0;
         speedMove = _speed;
     }
 
     private void InitZombie()
     {
+        player = GameObject.FindWithTag("Player");
+        zombieRb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        LoadSound();
+        gameManagerController = GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
+        playerController = player.GetComponent<PlayerController>();
         ResetHp();
+        anim.ResetTrigger("isDeath");
         gameManagerController.ZombieFinishAttack();
         ReturnMoving(1);
-        transform.position = GameObject.Find("Tombstones").transform.position;
+        GameObject tombstones = GameObject.Find("Tombstones");
+        transform.position = tombstones.transform.position;
+        transform.rotation = tombstones.transform.rotation;
         StopAllCoroutines();
         isZombieClose = false;
+        isZombieAttacking = false;
+        attackCooldownTimer = timeBetweenAttacks;
+        ReturnMoving(Random.Range(0.5f, 3f));
+        // anim.SetFloat("speed", speedMove);
+        zombieRb.detectCollisions = true;
     }
 }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
+    [SerializeField] private float timeDelay = 3;
     public GameObject FemaleZombiePrefab;
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("spawnZombie", 2, 10);
+        InvokeRepeating("spawnZombie", 0, timeDelay);
     }
 
     // Update is called once per frame
