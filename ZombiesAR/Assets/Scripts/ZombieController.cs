@@ -45,6 +45,7 @@ public class ZombieController : MonoBehaviour
     void Move()
     {
         transform.LookAt(player.transform.position);
+        
         transform.Translate(Vector3.forward * Time.deltaTime * speedMove);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
@@ -93,7 +94,8 @@ public class ZombieController : MonoBehaviour
         if (zombieHp <= 0)
         {
             anim.SetTrigger("isDeath");
-            zombieRb.detectCollisions = false;
+            // zombieRb.detectCollisions = false;
+            gameObject.layer = 2;
             StopMoving();
             gameManagerController.IncreaseScore(zombieScore);
             StopCoroutine(FinishAttacking());
@@ -124,6 +126,7 @@ public class ZombieController : MonoBehaviour
 
     private void InitZombie()
     {
+        gameObject.layer = 0;
         player = GameObject.FindWithTag("Player");
         zombieRb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
@@ -143,6 +146,6 @@ public class ZombieController : MonoBehaviour
         attackCooldownTimer = timeBetweenAttacks;
         ReturnMoving(Random.Range(0.5f, 3f));
         // anim.SetFloat("speed", speedMove);
-        zombieRb.detectCollisions = true;
+        // zombieRb.detectCollisions = true;
     }
 }

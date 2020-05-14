@@ -80,7 +80,7 @@ public class GameManagerController : MonoBehaviour
     IEnumerator EndGameWait()
     {
         yield return new WaitForSeconds(2);
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("My Game Over");
     }
 
     public void UpdatePowerGun(float currentPower)

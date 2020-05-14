@@ -17,9 +17,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.44725057
   m_TransitionOffset: 0
-  m_ExitTime: 0.6875
+  m_ExitTime: 0.4409368
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -68,9 +68,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.4548021
   m_TransitionOffset: 0
-  m_ExitTime: 0.6875
+  m_ExitTime: 0.4314974
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -251,13 +251,13 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isDeath
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Move Layer
@@ -288,9 +288,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.3312323
+  m_TransitionDuration: 0.45128876
   m_TransitionOffset: 0
-  m_ExitTime: 0.13025264
+  m_ExitTime: 0.017258298
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -373,9 +373,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 1.0973386
-  m_TransitionOffset: 0.008403308
-  m_ExitTime: 0.14947534
+  m_TransitionDuration: 1.5103327
+  m_TransitionOffset: 0
+  m_ExitTime: 0.046226803
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
