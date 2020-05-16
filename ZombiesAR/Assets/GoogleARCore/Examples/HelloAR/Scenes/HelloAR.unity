@@ -240,18 +240,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 8908707893166961506}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &391781733 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8908707893448371719, guid: ffc7740f99ccc4845a5bdcb0fc3e6992,
-    type: 3}
-  m_PrefabInstance: {fileID: 8908707893166961506}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &486856052
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,18 +384,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26074b15f9c13404d858bfedb8b8c00c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlaceGroundButton: {fileID: 1183675597}
-  PlaceTombButton: {fileID: 2006454108}
-  StartGameButton: {fileID: 391781733}
-  DummyPrefab: {fileID: 5826636650819989206, guid: b945632263d56274b9a9fb724613a890,
-    type: 3}
-  GroundPlanePrefab: {fileID: 7261848919680202999, guid: be95756ce9c5ae94191dec03d0991557,
-    type: 3}
-  TombPrefab: {fileID: 149362, guid: 72acfbeb17f3f3b4a8308cec03df077a, type: 3}
+  placeGroundButton: {fileID: 0}
+  placeTombButton: {fileID: 0}
+  startGameButton: {fileID: 0}
+  dummyPrefab: {fileID: 0}
+  groundPlanePrefab: {fileID: 0}
+  tombPrefab: {fileID: 0}
   FirstPersonCamera: {fileID: 896679035}
-  GameObjectVerticalPlanePrefab: {fileID: 5826636650819989206, guid: b945632263d56274b9a9fb724613a890,
+  GameObjectVerticalPlanePrefab: {fileID: 149362, guid: 72acfbeb17f3f3b4a8308cec03df077a,
     type: 3}
-  GameObjectHorizontalPlanePrefab: {fileID: 5826636650819989206, guid: b945632263d56274b9a9fb724613a890,
+  GameObjectHorizontalPlanePrefab: {fileID: 7261848919680202999, guid: be95756ce9c5ae94191dec03d0991557,
     type: 3}
   GameObjectPointPrefab: {fileID: 5826636650819989206, guid: b945632263d56274b9a9fb724613a890,
     type: 3}

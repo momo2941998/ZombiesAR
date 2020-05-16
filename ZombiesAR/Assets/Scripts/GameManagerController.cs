@@ -8,6 +8,7 @@ using TMPro;
 
 public class GameManagerController : MonoBehaviour
 {
+
     public GameObject player;
     private GunController gun;
     private PlayerController playerController;
@@ -18,13 +19,22 @@ public class GameManagerController : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public float playerHpMax = 10000;
     private float timeLeft;
-    public float score;
     [SerializeField]private float playTime = 90;
-    bool isGameOver;
+    public bool isGameOver;
+    public bool isGameSetup;
+    public bool isGamePlaying;
+
     // Start is called before the first frame update
     void Start()
     {
-        score = 0;
+
+    }
+
+    void RunGame()
+    {
+
+        ScoreManager.GetInstance().ResetScore();
+
         IncreaseScore(0);
         isGameOver = false;
         timeLeft = playTime;
@@ -35,10 +45,18 @@ public class GameManagerController : MonoBehaviour
         UpdadtePlayerHP();
         InvokeRepeating("UpdateTimeLeft",0,0.5f);
     }
-
     // Update is called once per frame
     void Update()
     {
+        if (isGameSetup) 
+        {
+            if (isGamePlaying == false)
+            {
+                RunGame();
+                isGamePlaying = true;
+                return;
+            }
+        } else return;
         if (isGameOver) return;
         timeLeft -= Time.deltaTime;
         if (timeLeft < 0)
@@ -106,8 +124,8 @@ public class GameManagerController : MonoBehaviour
     }
     public void IncreaseScore(float value)
     {
-        score += value;
-        scoreText.text = "SCORE: " + score;
+        ScoreManager.GetInstance().Increase(value);
+        scoreText.text = "SCORE: " + ScoreManager.GetInstance().GetScore() ;
     }
 
     

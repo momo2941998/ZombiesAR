@@ -11,9 +11,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/My Scene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/GoogleARCore/Examples/HelloAR/Scenes/My Game.unity
-    guid: 3c6680aa17333164ea22964754f8d200
+    guid: f3af2a10a5207ef48bd6fa1755352858
   - enabled: 1
     path: Assets/GoogleARCore/Examples/HelloAR/Scenes/My Game Over.unity
     guid: d7b797bcb21d47b46b89225c6a01062b

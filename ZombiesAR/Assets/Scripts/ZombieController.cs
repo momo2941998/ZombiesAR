@@ -137,7 +137,7 @@ public class ZombieController : MonoBehaviour
         anim.ResetTrigger("isDeath");
         gameManagerController.ZombieFinishAttack();
         ReturnMoving(1);
-        GameObject tombstones = GameObject.Find("Tombstones");
+        GameObject tombstones = GameObject.FindWithTag("TombStones");
         transform.position = tombstones.transform.position;
         transform.rotation = tombstones.transform.rotation;
         StopAllCoroutines();
