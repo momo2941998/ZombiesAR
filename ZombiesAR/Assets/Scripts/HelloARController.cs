@@ -37,19 +37,20 @@ namespace GoogleARCore.Examples.HelloAR
     /// </summary>
     public class HelloARController : MonoBehaviour
     {
-        public Button PlaceGroundButton;
-        public Button PlaceTombButton;
-        public Button StartGameButton;
+        public Button placeGroundButton;
+        public Button placeTombButton;
+        public Button startGameButton;
 
-        public GameObject DummyPrefab;
-        public GameObject GroundPlanePrefab;
-        public GameObject TombPrefab;
+        public GameObject dummyPrefab;
+        public GameObject groundPlanePrefab;
+        public GameObject tombPrefab;
 
         private GameObject groundPlaneGO;
-        private GameObject dummyGO;
+        private GameObject tombGO;
 
-        private bool isDummyInitialized;
+        private bool isPrefabInitialized;
         private bool isGroundPlaced;
+        private bool isTombPlaced;
         private bool hasGameStarted;
         private int numOfTombsPlaced = 0;
 
@@ -84,6 +85,9 @@ namespace GoogleARCore.Examples.HelloAR
         /// otherwise false.
         /// </summary>
         private bool m_IsQuitting = false;
+        private GameManagerController gameManagerController;
+        GameObject prefab;
+        GameObject currentGO;
 
         /// <summary>
         /// The Unity Awake() method.
@@ -95,11 +99,26 @@ namespace GoogleARCore.Examples.HelloAR
             Application.targetFrameRate = 60;
         }
 
+        private void Start()
+        {
+            currentGO = Instantiate(dummyPrefab) as GameObject;
+            isGroundPlaced = false;
+            isTombPlaced = false;
+            gameManagerController = GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
+            gameManagerController.isGameSetup = false;
+            if (!isGroundPlaced) 
+            {
+                AllowPlaceGroundButton();
+            }
+        }
+
+
         /// <summary>
         /// The Unity Update() method.
         /// </summary>
         public void Update()
         {
+            if (gameManagerController.isGameSetup) return;
             _UpdateApplicationLifecycle();
 
             // If the player has not touched the screen, we are done with this update.
@@ -133,7 +152,7 @@ namespace GoogleARCore.Examples.HelloAR
                 else
                 {
                     // Choose the prefab based on the Trackable that got hit.
-                    GameObject prefab;
+
                     if (hit.Trackable is FeaturePoint)
                     {
                         prefab = GameObjectPointPrefab;
@@ -157,6 +176,7 @@ namespace GoogleARCore.Examples.HelloAR
 
                     // Instantiate prefab at the hit pose.
                     var gameObject = Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
+                    Destroy(gameObject,5);
 
                     // Compensate for the hitPose rotation facing away from the raycast (i.e.
                     // camera).
@@ -168,6 +188,9 @@ namespace GoogleARCore.Examples.HelloAR
 
                     // Make game object a child of the anchor.
                     gameObject.transform.parent = anchor.transform;
+                    currentGO.transform.position = hit.Pose.position;
+                    currentGO.transform.rotation = hit.Pose.rotation;
+                    isPrefabInitialized = true;
                 }
             }
         }
@@ -177,6 +200,7 @@ namespace GoogleARCore.Examples.HelloAR
         /// </summary>
         private void _UpdateApplicationLifecycle()
         {
+            if (gameManagerController.isGameSetup) return;
             // Exit the app when the 'back' button is pressed.
             if (Input.GetKey(KeyCode.Escape))
             {
@@ -245,5 +269,63 @@ namespace GoogleARCore.Examples.HelloAR
                 }));
             }
         }
+        void AllowPlaceGroundButton()
+        {
+            placeGroundButton.gameObject.SetActive(true);
+            placeTombButton.gameObject.SetActive(false);
+            startGameButton.gameObject.SetActive(false);
+            placeGroundButton.onClick.AddListener(PlaceGround);
+        }
+        void AllowPlaceTombButton()
+        {
+            placeGroundButton.gameObject.SetActive(false);
+            placeTombButton.gameObject.SetActive(true);
+            startGameButton.gameObject.SetActive(false);
+            
+            placeTombButton.onClick.AddListener(PlaceTomb);
+        }
+        void AllowStartButton()
+        {
+            placeGroundButton.gameObject.SetActive(false);
+            placeTombButton.gameObject.SetActive(false);
+            startGameButton.gameObject.SetActive(true);
+            startGameButton.onClick.AddListener(StartGame);
+            // Time.timeScale =1;
+        }
+
+        
+        void PlaceGround()
+        {
+            if (isPrefabInitialized)
+            {
+                Instantiate(groundPlanePrefab,currentGO.transform.position, currentGO.transform.rotation);
+                isPrefabInitialized = false;
+                AllowPlaceTombButton();
+            }
+        }
+
+        void PlaceTomb()
+        {
+            if (isPrefabInitialized)
+            {
+                Instantiate(tombPrefab,currentGO.transform.position, currentGO.transform.rotation);
+                isPrefabInitialized = false;
+                AllowStartButton();
+            }
+        }
+
+        void StartGame()
+        {
+            startGameButton.gameObject.SetActive(false);
+            gameManagerController.isGameSetup = true;
+        }
+
+        void assignTransform(GameObject _gameObject, GameObject _prefab)
+        {
+            _gameObject.transform.position = _prefab.transform.position;
+            _gameObject.transform.rotation = _prefab.transform.rotation;
+        }
     }
+
 }
+

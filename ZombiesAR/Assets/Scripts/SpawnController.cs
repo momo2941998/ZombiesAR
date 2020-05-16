@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
+    bool hasStartSpawn = false;
+    GameManagerController gameManagerController;
     [SerializeField] private float timeDelay = 3;
     public GameObject FemaleZombiePrefab;
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("spawnZombie", 0, timeDelay);
+        gameManagerController = GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
     }
-
     // Update is called once per frame
     void Update()
     {
-        
+        if (!hasStartSpawn)
+        {
+            if (gameManagerController.isGamePlaying)
+            {
+                InvokeRepeating("spawnZombie", 0, timeDelay);
+                hasStartSpawn = true;
+            }
+        }
     }
 
     private void spawnZombie()

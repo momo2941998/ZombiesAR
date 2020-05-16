@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - GameManager
   - Gun
+  - Dummy
+  - TombStones
   layers:
   - Default
   - TransparentFX

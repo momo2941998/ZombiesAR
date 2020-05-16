@@ -21,6 +21,7 @@ public class ZombieController : MonoBehaviour
     public float zombieHp;
     public float zombieHpMax = 50;
     public float speedMove = 1;
+
     void Start()
     {
 
@@ -46,7 +47,7 @@ public class ZombieController : MonoBehaviour
     {
         transform.LookAt(player.transform.position);
         
-        transform.Translate(Vector3.forward * Time.deltaTime * speedMove);
+        transform.Translate(Vector3.forward * Time.deltaTime * speedMove * 0.5f);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
@@ -137,14 +138,14 @@ public class ZombieController : MonoBehaviour
         anim.ResetTrigger("isDeath");
         gameManagerController.ZombieFinishAttack();
         ReturnMoving(1);
-        GameObject tombstones = GameObject.Find("Tombstones");
+        GameObject tombstones = GameObject.FindWithTag("TombStones");
         transform.position = tombstones.transform.position;
         transform.rotation = tombstones.transform.rotation;
         StopAllCoroutines();
         isZombieClose = false;
         isZombieAttacking = false;
         attackCooldownTimer = timeBetweenAttacks;
-        ReturnMoving(Random.Range(0.5f, 3f));
+        ReturnMoving(Random.Range(0.5f, 2.5f));
         // anim.SetFloat("speed", speedMove);
         // zombieRb.detectCollisions = true;
     }
