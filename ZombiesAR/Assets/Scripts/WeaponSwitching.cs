@@ -7,11 +7,13 @@ public class WeaponSwitching : MonoBehaviour
 {
     [SerializeField] private int selectedWeapon = 0;
     public Button changeWeapon;
-
+    public GameObject[] guns;
+    public Button fire;
     // Start is called before the first frame update
     void Start()
     {
         SelectWeapon();
+        fire.onClick.AddListener(Shoot);
         changeWeapon.onClick.AddListener(ChangeWeapon);
     }
 
@@ -24,15 +26,15 @@ public class WeaponSwitching : MonoBehaviour
     void SelectWeapon()
     {
         int i = 0;
-        foreach (Transform weapon in transform)
+        foreach (GameObject gun in guns)
         {
             if (i == selectedWeapon)
             {
-                weapon.gameObject.SetActive(true);
+                gun.gameObject.SetActive(true);
             } else 
             {        
-                weapon.GetComponent<GunController>().StopAllCoroutines();
-                weapon.gameObject.SetActive(false);
+                gun.GetComponent<GunController>().StopAllCoroutines();
+                gun.gameObject.SetActive(false);
             }
             i++;
 
@@ -44,4 +46,12 @@ public class WeaponSwitching : MonoBehaviour
         else selectedWeapon ++ ;
         SelectWeapon();
     }
+
+    public void Shoot()
+    {
+        guns[selectedWeapon].GetComponent<GunController>().Shoot();
+    }    
+
+
+
 }

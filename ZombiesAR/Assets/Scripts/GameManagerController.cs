@@ -101,9 +101,9 @@ public class GameManagerController : MonoBehaviour
         SceneManager.LoadScene("My Game Over");
     }
 
-    public void UpdatePowerGun(float currentPower)
+    public void UpdatePowerGun(float _currentPower, float _powerGunMax)
     {
-        powerGunText.text = "" + currentPower + "/" + gun.powerGunMax;
+        powerGunText.text = "" + _currentPower + "/" + _powerGunMax;
     }
 
     void FlickImage()

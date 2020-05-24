@@ -9,6 +9,7 @@ TagManager:
   - Gun
   - Dummy
   - TombStones
+  - WeaponHolder
   layers:
   - Default
   - TransparentFX

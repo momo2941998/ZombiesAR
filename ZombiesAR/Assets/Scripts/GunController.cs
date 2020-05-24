@@ -11,15 +11,16 @@ public class GunController : MonoBehaviour
     public ParticleSystem muzzleFlashPartical;
     public GameObject impact;
     public float hitForce = 300;
-    public float powerGunMax = 50;
+    public float powerGunMax;
     public float powerGun;
-    public float refillTime = 0.1f;
     GameManagerController gameManagerController;
     public Vector3 movePos = new Vector3(0,0,0.2f);
     public float backTime = 0.05f;
     private AudioSource fireSound;
+    public float delayTimeInvoke;
+    private Vector3 distanceBack;
+    public bool isEnable = false;
 
-    public Button fire;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,51 +28,66 @@ public class GunController : MonoBehaviour
         fireSound = GetComponent<AudioSource>();
         powerGun = powerGunMax;
         fpsCam = Camera.main;
-        fire.onClick.AddListener(Shoot);
+        distanceBack = Vector3.zero;
         muzzleFlashPartical.gameObject.SetActive(true);
         impact.gameObject.SetActive(true);
-        InvokeRepeating("RefillPower", 0.5f , 0.5f);
+
 
     }
+    private void OnEnable()
+    {
+        isEnable = true;
+        InvokeRepeating("RefillPower", 0, delayTimeInvoke);
+    }
 
+    private void OnDisable()
+    {
+        isEnable = false;
+        ResetPosition();
+        CancelInvoke();
+    }
     // Update is called once per frame
     void Update()
     {
         
     }
 
-    void Shoot(){
-        if (powerGun <= 0) return;
-        fireSound.Play();
-        powerGun -= 1;
-        ShootEffect();
-        fpsCam.GetComponent<ShakeCam>().Shake(0.2f);
-        gameManagerController.UpdatePowerGun(powerGun);
-        StopAllCoroutines();
-        muzzleFlashPartical.Play();
-        StartCoroutine(GapShoot());
-        RaycastHit hit;
-        if (Physics.Raycast(fpsCam.transform.position,fpsCam.transform.forward, out hit, range))
+    public void Shoot(){
+    if (isEnable)
         {
-            ZombieController zombieController = hit.transform.GetComponent<ZombieController>();
-            if(zombieController != null)
+            if (powerGun <= 0) return;
+            fireSound.Play();
+            powerGun -= 1;
+            ShootEffect();
+            fpsCam.GetComponent<ShakeCam>().Shake(0.2f);
+            gameManagerController.UpdatePowerGun(powerGun,powerGunMax);
+            StopAllCoroutines();
+            muzzleFlashPartical.Play();
+            StartCoroutine(GapShoot());
+            RaycastHit hit;
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
-                zombieController.TakeDamage(damageGun);
-            }
-            if (hit.rigidbody != null)
-            {
-                hit.rigidbody.AddForce(hit.normal * hitForce,ForceMode.Impulse);
-            }
-            GameObject impactGO = Instantiate(impact,hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO, 2);
+                ZombieController zombieController = hit.transform.GetComponent<ZombieController>();
+                if (zombieController != null)
+                {
+                    zombieController.TakeDamage(damageGun);
+                }
+                if (hit.rigidbody != null)
+                {
+                    hit.rigidbody.AddForce(hit.normal * hitForce, ForceMode.Impulse);
+                }
+                GameObject impactGO = Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impactGO, 2);
 
+            }
         }
         
     }
 
     IEnumerator GapShoot()
     {
-        yield return new WaitForSeconds(0.2f);
+        while (!isEnable) yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.1f);
         muzzleFlashPartical.Stop();
     }
     
@@ -81,21 +97,25 @@ public class GunController : MonoBehaviour
         {
             powerGun += 1;
         }
-        gameManagerController.UpdatePowerGun(powerGun);
+        gameManagerController.UpdatePowerGun(powerGun,powerGunMax);
     }
 
     void ShootEffect()
     {
         MoveBackward();
-        Invoke("MoveForward",backTime);
+        Invoke("ResetPosition",backTime);
     }
     void MoveBackward()
     {
         transform.position -= movePos;
+        distanceBack += movePos;
     }
-    void MoveForward()
+    void ResetPosition()
     {
-        transform.position += movePos;
+        //transform.position = weaponHolder.transform.position - defaultPos;
+
+        transform.position += distanceBack;
+        distanceBack = Vector3.zero;
     }
 
 }
