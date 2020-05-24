@@ -105,10 +105,12 @@ namespace GoogleARCore.Examples.HelloAR
             isGroundPlaced = false;
             isTombPlaced = false;
             gameManagerController = GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
-            gameManagerController.isGameSetup = false;
-            if (!isGroundPlaced) 
+            if (gameManagerController.isGameSetup == false)
             {
-                AllowPlaceGroundButton();
+                if (!isGroundPlaced)
+                {
+                    AllowPlaceGroundButton();
+                }
             }
         }
 
@@ -317,6 +319,7 @@ namespace GoogleARCore.Examples.HelloAR
         void StartGame()
         {
             startGameButton.gameObject.SetActive(false);
+            
             gameManagerController.isGameSetup = true;
         }
 

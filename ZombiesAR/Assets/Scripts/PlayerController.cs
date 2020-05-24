@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float playerHp = 0;
-    public float isAlive;
+    public bool isAlive;
 
     public void DecreaseHp(float _hp)
     {
@@ -21,4 +21,5 @@ public class PlayerController : MonoBehaviour
     {
         playerHp = hp;
     }
+
 }

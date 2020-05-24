@@ -38,7 +38,7 @@ public class GameManagerController : MonoBehaviour
         IncreaseScore(0);
         isGameOver = false;
         timeLeft = playTime;
-        player = GameObject.FindWithTag("Player");
+        player = GameObject.FindWithTag("MainCamera");
         playerController = player.GetComponent<PlayerController>();
         playerController.InitHp(playerHpMax);
         gun = GameObject.FindWithTag("Gun").GetComponent<GunController>();

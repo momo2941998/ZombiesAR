@@ -21,16 +21,30 @@ public class ZombieController : MonoBehaviour
     public float zombieHp;
     public float zombieHpMax = 50;
     public float speedMove = 1;
+    public GameObject heathBar;
+    private HeathController heathController;
+    bool isInit;
 
     void Start()
     {
-
-        InitZombie();
+        player = GameObject.FindWithTag("MainCamera");
+        gameManagerController = GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
+        heathController = heathBar.GetComponent<HeathController>();
+        playerController = player.GetComponent<PlayerController>();
+        //InitZombie();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gameManagerController.isGameSetup)
+        {
+            if (!isInit)
+            {
+                InitZombie();
+                isInit = true;
+            }
+        }
         if (isZombieAttacking) return;
         anim.SetFloat("speed", speedMove);
         Move();
@@ -45,7 +59,9 @@ public class ZombieController : MonoBehaviour
 
     void Move()
     {
-        transform.LookAt(player.transform.position);
+        Vector3 target = player.transform.position;
+        target -= new Vector3(0, target.y, 0);
+        transform.LookAt(target);
         
         transform.Translate(Vector3.forward * Time.deltaTime * speedMove * 0.5f);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
@@ -91,11 +107,11 @@ public class ZombieController : MonoBehaviour
 
     public void TakeDamage(float _damage)
     {
-        zombieHp -= _damage;
-        if (zombieHp <= 0)
+        heathController.ChangeHeath(-_damage);
+        if (heathController.currentHeath <= 0)
         {
             anim.SetTrigger("isDeath");
-            // zombieRb.detectCollisions = false;
+            //zombieRb.detectCollisions = false;
             gameObject.layer = 2;
             StopMoving();
             gameManagerController.IncreaseScore(zombieScore);
@@ -111,7 +127,9 @@ public class ZombieController : MonoBehaviour
     }
     private void ResetHp()
     {
-        zombieHp = zombieHpMax;
+        zombieHp = zombieHpMax = 50;
+        heathController.GetParentInfor();
+        heathController.ChangeHeath(0);
     }
 
     private void StopMoving()
@@ -128,12 +146,10 @@ public class ZombieController : MonoBehaviour
     private void InitZombie()
     {
         gameObject.layer = 0;
-        player = GameObject.FindWithTag("Player");
+
         zombieRb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         LoadSound();
-        gameManagerController = GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
-        playerController = player.GetComponent<PlayerController>();
         ResetHp();
         anim.ResetTrigger("isDeath");
         gameManagerController.ZombieFinishAttack();
@@ -146,7 +162,7 @@ public class ZombieController : MonoBehaviour
         isZombieAttacking = false;
         attackCooldownTimer = timeBetweenAttacks;
         ReturnMoving(Random.Range(0.5f, 2.5f));
-        // anim.SetFloat("speed", speedMove);
-        // zombieRb.detectCollisions = true;
+        anim.SetFloat("speed", speedMove);
+        //zombieRb.detectCollisions = true;
     }
 }
