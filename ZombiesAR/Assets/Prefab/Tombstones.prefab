@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b953052a70947341822a04b25857b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeDelay: 3
+  timeDelay: 5
   FemaleZombiePrefab: {fileID: 1866084600159199265, guid: 9c3edfb8d43d09c4f8dcfb63326f670b,
     type: 3}
 --- !u!114 &594008984

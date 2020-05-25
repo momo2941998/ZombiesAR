@@ -6,7 +6,7 @@ public class SpawnController : MonoBehaviour
 {
     bool hasStartSpawn = false;
     GameManagerController gameManagerController;
-    [SerializeField] private float timeDelay = 3;
+    [SerializeField] private float timeDelay = 5;
     public GameObject FemaleZombiePrefab;
     // Start is called before the first frame update
     void Start()
@@ -20,7 +20,7 @@ public class SpawnController : MonoBehaviour
         {
             if (gameManagerController.isGamePlaying)
             {
-                InvokeRepeating("spawnZombie", 0, timeDelay);
+                InvokeRepeating("spawnZombie", 0, timeDelay/ LevelGame.GetInstance().GetLevel().GetDifficult());
                 hasStartSpawn = true;
             }
         }

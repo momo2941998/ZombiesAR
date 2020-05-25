@@ -32,7 +32,7 @@ public class GameManagerController : MonoBehaviour
 
     void RunGame()
     {
-
+        Debug.Log(LevelGame.GetInstance().GetLevel().GetName());
         ScoreManager.GetInstance().ResetScore();
 
         IncreaseScore(0);
