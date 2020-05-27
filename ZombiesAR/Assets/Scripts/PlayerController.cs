@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public void DecreaseHp(float _hp)
     {
         playerHp -= _hp;
+        if (playerHp < 0) playerHp = 0;
     }
 
     public void IncreaseHp(float _hp)

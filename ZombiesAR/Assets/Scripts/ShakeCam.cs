@@ -41,7 +41,7 @@ public class ShakeCam : MonoBehaviour
     }
     public void Shake(float _duration)
     {
-        camTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
-        Invoke("ResetTransform", _duration);
+        //camTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+        //Invoke("ResetTransform", _duration);
     }
 }

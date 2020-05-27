@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         levels = new Level[] { new Level("easy", 1) , new Level("medium", 1.5f) , new Level("hard", 2) };
         currentLevel = levels[0];
         easyLevelButton.onClick.AddListener(SelLevel0);
