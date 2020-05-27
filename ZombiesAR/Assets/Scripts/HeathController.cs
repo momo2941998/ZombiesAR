@@ -19,11 +19,12 @@ public class HeathController : MonoBehaviour
     void Start()
     {
         myCam = Camera.main;
-        zombieController = parentGO.GetComponent<ZombieController>();
+        
     }
 
     public void GetParentInfor()
     {
+        zombieController = parentGO.GetComponent<ZombieController>();
         maxHeath = zombieController.zombieHpMax;
         currentHeath = zombieController.zombieHp;
     }

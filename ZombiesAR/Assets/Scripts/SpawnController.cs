@@ -20,7 +20,9 @@ public class SpawnController : MonoBehaviour
         {
             if (gameManagerController.isGamePlaying)
             {
-                InvokeRepeating("spawnZombie", 0, timeDelay/ LevelGame.GetInstance().GetLevel().GetDifficult());
+                float i = 1;
+                if (LevelGame.GetInstance().GetLevel().GetDifficult() != 0) i = LevelGame.GetInstance().GetLevel().GetDifficult();
+                InvokeRepeating("spawnZombie", 0, timeDelay/ i);
                 hasStartSpawn = true;
             }
         }

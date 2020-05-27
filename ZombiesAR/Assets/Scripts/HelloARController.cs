@@ -53,6 +53,7 @@ namespace GoogleARCore.Examples.HelloAR
         private bool isTombPlaced;
         private bool hasGameStarted;
         private int numOfTombsPlaced = 0;
+        public float distance = 3;
 
         /// <summary>
         /// The first-person camera being used to render the passthrough camera image (i.e. AR
@@ -128,6 +129,7 @@ namespace GoogleARCore.Examples.HelloAR
             if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
             {
                 return;
+
             }
 
             // Should not handle input if the player is pointing on UI.
@@ -273,10 +275,33 @@ namespace GoogleARCore.Examples.HelloAR
         }
         void AllowPlaceGroundButton()
         {
-            placeGroundButton.gameObject.SetActive(true);
-            placeTombButton.gameObject.SetActive(false);
-            startGameButton.gameObject.SetActive(false);
-            placeGroundButton.onClick.AddListener(PlaceGround);
+            //placeGroundButton.gameObject.SetActive(true);
+            //placeTombButton.gameObject.SetActive(false);
+            //startGameButton.gameObject.SetActive(false);
+            //placeGroundButton.onClick.AddListener(PlaceGround);
+            Camera mainCam = Camera.main;
+
+            //Init Ground
+            GameObject ground = Instantiate(groundPlanePrefab, Vector3.zero, mainCam.transform.rotation) as GameObject;
+
+
+            Level level = LevelGame.GetInstance().GetLevel();
+            float levelGame = level.GetDifficult();
+            if (levelGame == 0)
+                numOfTombsPlaced = 1;
+            else
+            {
+                numOfTombsPlaced = (int)levelGame * 2; 
+            }
+            // init tomb
+            for (int i = 0; i < numOfTombsPlaced; i++)
+            {
+                Vector3 ranPos = new Vector3(Random.Range(-3, 3), 0, Random.Range(5, 7));
+                GameObject tomb = Instantiate(tombPrefab, ranPos, mainCam.transform.rotation) as GameObject;
+                tomb.transform.Rotate(Vector3.up * 180);
+            }
+            AllowStartButton();
+
         }
         void AllowPlaceTombButton()
         {
