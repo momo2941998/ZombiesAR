@@ -753,7 +753,7 @@ MonoBehaviour:
   timeToFill: 20
   lastTimeFill: 0
   mainCam: {fileID: 896679035}
-  pushForce: 10
+  pushForce: 20
 --- !u!224 &624423928 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2387454523540179596, guid: 5a0926004e77d0742ab573d4d6d9c498,
