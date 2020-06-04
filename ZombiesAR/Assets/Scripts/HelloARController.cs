@@ -54,6 +54,7 @@ namespace GoogleARCore.Examples.HelloAR
         private bool hasGameStarted;
         private int numOfTombsPlaced = 0;
         public float distance = 3;
+        public float currentNumTomb;
 
         /// <summary>
         /// The first-person camera being used to render the passthrough camera image (i.e. AR
@@ -106,6 +107,14 @@ namespace GoogleARCore.Examples.HelloAR
             isGroundPlaced = false;
             isTombPlaced = false;
             gameManagerController = GameObject.FindWithTag("GameManager").GetComponent<GameManagerController>();
+            Level level = LevelGame.GetInstance().GetLevel();
+            float levelGame = level.GetDifficult();
+            if (levelGame == 0)
+                numOfTombsPlaced = 1;
+            else
+            {
+                numOfTombsPlaced = (int)levelGame * 2;
+            }
             if (gameManagerController.isGameSetup == false)
             {
                 if (!isGroundPlaced)
@@ -122,6 +131,7 @@ namespace GoogleARCore.Examples.HelloAR
         public void Update()
         {
             if (gameManagerController.isGameSetup) return;
+            if (currentNumTomb >= numOfTombsPlaced) AllowStartButton(); 
             _UpdateApplicationLifecycle();
 
             // If the player has not touched the screen, we are done with this update.
@@ -275,32 +285,25 @@ namespace GoogleARCore.Examples.HelloAR
         }
         void AllowPlaceGroundButton()
         {
-            //placeGroundButton.gameObject.SetActive(true);
-            //placeTombButton.gameObject.SetActive(false);
-            //startGameButton.gameObject.SetActive(false);
-            //placeGroundButton.onClick.AddListener(PlaceGround);
-            Camera mainCam = Camera.main;
+            placeGroundButton.gameObject.SetActive(true);
+            placeTombButton.gameObject.SetActive(false);
+            startGameButton.gameObject.SetActive(false);
+            placeGroundButton.onClick.AddListener(PlaceGround);
+            //Camera mainCam = Camera.main;
 
             //Init Ground
-            GameObject ground = Instantiate(groundPlanePrefab, Vector3.zero, mainCam.transform.rotation) as GameObject;
+            //GameObject ground = Instantiate(groundPlanePrefab, Vector3.zero, mainCam.transform.rotation) as GameObject;
 
 
-            Level level = LevelGame.GetInstance().GetLevel();
-            float levelGame = level.GetDifficult();
-            if (levelGame == 0)
-                numOfTombsPlaced = 1;
-            else
-            {
-                numOfTombsPlaced = (int)levelGame * 2; 
-            }
+
             // init tomb
-            for (int i = 0; i < numOfTombsPlaced; i++)
-            {
-                Vector3 ranPos = new Vector3(Random.Range(-3, 3), 0, Random.Range(5, 7));
-                GameObject tomb = Instantiate(tombPrefab, ranPos, mainCam.transform.rotation) as GameObject;
-                tomb.transform.Rotate(Vector3.up * 180);
-            }
-            AllowStartButton();
+            //for (int i = 0; i < numOfTombsPlaced; i++)
+            //{
+            //    Vector3 ranPos = new Vector3(Random.Range(-3, 3), 0, Random.Range(5, 7));
+            //    GameObject tomb = Instantiate(tombPrefab, ranPos, mainCam.transform.rotation) as GameObject;
+            //    tomb.transform.Rotate(Vector3.up * 90);
+            //}
+            //AllowStartButton();
 
         }
         void AllowPlaceTombButton()
@@ -333,12 +336,15 @@ namespace GoogleARCore.Examples.HelloAR
 
         void PlaceTomb()
         {
-            if (isPrefabInitialized)
-            {
-                Instantiate(tombPrefab,currentGO.transform.position, currentGO.transform.rotation);
-                isPrefabInitialized = false;
-                AllowStartButton();
-            }
+                if (isPrefabInitialized)
+                {
+                    var x = Instantiate(tombPrefab,currentGO.transform.position, currentGO.transform.rotation) as GameObject;
+                    x.transform.LookAt(Camera.main.transform);
+                    isPrefabInitialized = false;
+                    currentNumTomb++;
+
+                }
+
         }
 
         void StartGame()

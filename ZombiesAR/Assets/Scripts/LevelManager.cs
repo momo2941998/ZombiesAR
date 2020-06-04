@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
-        levels = new Level[] { new Level("easy", 1) , new Level("medium", 1.5f) , new Level("hard", 2) };
+        levels = new Level[] { new Level("easy", 1) , new Level("medium", 2.0f) , new Level("hard", 3.0f) };
         currentLevel = levels[0];
         easyLevelButton.onClick.AddListener(SelLevel0);
         mediumLevelButton.onClick.AddListener(SelLevel1);

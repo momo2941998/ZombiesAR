@@ -46,13 +46,16 @@ public class ZombieController : MonoBehaviour
             }
         }
         if (isZombieAttacking) return;
-        anim.SetFloat("speed", speedMove);
-        Move();
-        attackCooldownTimer -= Time.deltaTime;
-        if (attackCooldownTimer <= 0 && isZombieClose)
+        if (zombieHp > 0)
         {
-            Attack();
-            attackCooldownTimer = timeBetweenAttacks;
+            anim.SetFloat("speed", speedMove);
+            Move();
+            attackCooldownTimer -= Time.deltaTime;
+            if (attackCooldownTimer <= 0 && isZombieClose)
+            {
+                Attack();
+                attackCooldownTimer = timeBetweenAttacks;
+            }
         }
 
     }

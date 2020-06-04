@@ -49,7 +49,7 @@ public class MissleButton : MonoBehaviour
         if (lastTimeFill == timeToFill)
         {
             GameObject missle = Instantiate(misslePrefab, mainCam.transform.position, mainCam.transform.rotation) as GameObject;
-            missle.GetComponent<Rigidbody>().AddForce(pushForce * Vector3.forward, ForceMode.Impulse);
+            missle.GetComponent<Rigidbody>().AddForce(pushForce * missle.transform.forward, ForceMode.Impulse);
             
             ResetMissle();
         }
